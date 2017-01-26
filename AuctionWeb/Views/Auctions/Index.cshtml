@@ -1,0 +1,47 @@
+﻿@model IEnumerable<AuctionWeb.Models.Auction>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Seznam avkcij</h2>
+<!--
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+    -->
+<table class="table">
+    <tr>
+        <th>
+            Ime avkcije
+        </th>
+        <th>
+            Opis avkcije
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        
+        <td>
+            <!--|                @Html.ActionLink("Delete", "Delete", new { id = item.AuctionId })-->
+            @Html.ActionLink("Odpri avkcijo", "Details", new { id=item.AuctionId }) 
+            @if (item.Gallery == null)
+            {
+
+                @Html.ActionLink("Edit", "Edit", new { id = item.AuctionId })
+
+            }
+        </td>
+    </tr>
+}
+
+</table>

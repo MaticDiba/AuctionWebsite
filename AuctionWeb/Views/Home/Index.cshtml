@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Prva stran DZRJL avkcij";
+}
+
+<div class="jumbotron">
+    <h1>@Session["message"]</h1>
+    <p class="lead">Pozdravljeni na spletni strani DZRJL avkcije.</p>
+    @Html.ActionLink("Pojdi na seznam avkcij", "Index", "Auctions", null, htmlAttributes: new { @class = "btn btn-primary btn-lg" })
+
+</div>

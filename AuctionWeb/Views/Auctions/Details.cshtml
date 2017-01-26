@@ -1,0 +1,155 @@
+﻿@model AuctionWeb.Models.Auction
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+@Styles.Render("~/Content/jQuery-File-Upload")
+@Styles.Render("~/Content/css/base")
+
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Ime
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            Opis
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+
+    </dl>
+</div>
+<table id="gallery" role="presentation" class="table table-striped">
+
+    <tbody class="files">
+@if (Model.Gallery != null)
+{
+    foreach (AuctionWeb.Models.Image im in Model.Gallery.Images)
+    {
+        <tr class="template-download fade in">
+            <td>
+                <span class="preview">
+
+                    <a href="@im.Path" id="ShowImage" title="@im.Name" download="@im.Name" data-gallery ><img src="@im.ThumbnailPath"></a>
+
+                </span>
+            </td>
+            <td>
+                <p class="name">
+
+                    <a href="@im.Path" title="@im.Name" download="@im.Name" >@im.Name</a>
+
+                </p>
+
+            </td>
+            <td>
+                <span class="size">@im.Description</span>
+            </td>
+            <td>
+                @if (im.AuctionOffers != null && im.AuctionOffers.Count > 0 && im.AuctionOffers.Count(of => string.IsNullOrEmpty(of.Guid)) > 0)
+                {
+                    <span class="size">Best offer: @im.AuctionOffers.Where(of => string.IsNullOrEmpty(of.Guid)).Max(of => of.Amount)</span>
+                }
+
+            </td>
+            <td>
+                @if (im.AuctionOffers != null && im.AuctionOffers.Count > 0 && im.AuctionOffers.Count(of => !string.IsNullOrEmpty(of.Guid)) > 0)
+                {
+                    <span class="size">Število nepotrjenih ponudb: @im.AuctionOffers.Where(of => !string.IsNullOrEmpty(of.Guid)).Count()</span>
+                }
+
+            </td>
+            <td>
+
+                <button class="btn btn-info make-offer" data-type="GET" data-url="" data-imageid="@im.ImageId">
+                    <i class="glyphicon glyphicon-usd"></i>
+                    <span>Oddaj ponudbo</span>
+                </button>
+            </td>
+        </tr>
+    }
+}
+    </tbody>
+</table>
+
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
+<!--<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AuctionId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>-->
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jQuery-File-Upload")
+    @Scripts.Render("~/bundles/jqueryui")
+<script>
+    $(document).ready(function() {
+        // setup the dialog
+        
+        $("#create-offer-modal").dialog({
+            modal: true,
+            autoOpen: false,
+            height: 400,
+            width: 500,
+            close: function (event, ui) {
+                $(this).empty()
+            }
+        });
+
+        // bind the click event
+        $(".make-offer").on("click", function (event) {
+            event.preventDefault();
+            var clientId = $(this).data("imageid");
+            $.ajax({
+                url: "/AuctionOffers/Create/" + clientId,
+                data: {imageId: clientId},
+                type: "GET",
+            }).done(function (result) {
+                $("#create-offer-modal").html(result).dialog("open");
+            });
+            //$("#create-offer-modal").dialog("open");  // show dialog
+        });
+
+        $("#messageModal").dialog({
+            modal: true,
+            autoOpen: @(Session["message"] != null ? Html.Raw("true"): Html.Raw("false") ),
+            dialogClass: "no-titlebar",
+            height: 100,
+            width: 300,
+        });
+        setTimeout(function () {
+            $("#messageModal").dialog('close');
+        }, 3000);
+    })
+</script>
+}
+<div id="create-offer-modal">
+    lol
+</div>
+
+<div id="messageModal">
+
+                @Html.Raw(Session["message"] != null ? Session["message"].ToString() : string.Empty)
+
+</div>
