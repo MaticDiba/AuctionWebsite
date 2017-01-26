@@ -137,9 +137,11 @@ namespace AuctionWeb.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult Register(int id)
         {
-            return View();
+            if(id == 66)
+                return View();
+            return RedirectToAction("Index","Home");
         }
 
         //

@@ -60,7 +60,8 @@
             <td>
                 @if (im.AuctionOffers != null && im.AuctionOffers.Count > 0 && im.AuctionOffers.Count(of => string.IsNullOrEmpty(of.Guid)) > 0)
                 {
-                    <span class="size">Best offer: @im.AuctionOffers.Where(of => string.IsNullOrEmpty(of.Guid)).Max(of => of.Amount)</span>
+                    var bestOffer = im.AuctionOffers.Where(of => string.IsNullOrEmpty(of.Guid)).OrderByDescending(of => of.Amount).First();
+                    <span class="size">Najboljša ponudba: @im.AuctionOffers.Where(of => string.IsNullOrEmpty(of.Guid)).Max(of => of.Amount) (@bestOffer.Email)</span>
                 }
 
             </td>
@@ -128,7 +129,6 @@
             }).done(function (result) {
                 $("#create-offer-modal").html(result).dialog("open");
             });
-            //$("#create-offer-modal").dialog("open");  // show dialog
         });
 
         $("#messageModal").dialog({
@@ -140,12 +140,18 @@
         });
         setTimeout(function () {
             $("#messageModal").dialog('close');
+            $.ajax({
+                url: "/AuctionOffers/ClearMessage/",
+                type: "POST",
+            }).done(function () {
+                
+            });
         }, 3000);
     })
 </script>
 }
 <div id="create-offer-modal">
-    lol
+    
 </div>
 
 <div id="messageModal">

@@ -18,6 +18,9 @@ namespace AuctionWeb
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute("RegisterRoute",
+               "Account/Register/{auth}",
+               new { controller = "Account", action = "Register", auth = 0 }, null);
         }
     }
 }

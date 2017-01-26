@@ -53,7 +53,9 @@ namespace AuctionWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-;
+                if ((User.Identity != null) && (User.Identity.Name != null)) auction.CreatedBy = User.Identity.Name;
+                auction.CreatedDateTime = DateTime.Now;
+
                 db.Auctions.Add(auction);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -118,6 +120,11 @@ namespace AuctionWeb.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Auction auction = db.Auctions.Find(id);
+            if(auction.Gallery != null)
+            {
+                db.Galleries.Remove(auction.Gallery);
+                db.SaveChanges();
+            }
             db.Auctions.Remove(auction);
             db.SaveChanges();
             return RedirectToAction("Index");

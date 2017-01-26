@@ -56,7 +56,14 @@
         </div>
     </div>
 }
-@Html.ActionLink("Create New gallery", "Create", "Galleries", new { AuctionId = Model.AuctionId }, null)
+@if (Model.Gallery != null)
+{
+    @Html.ActionLink("Edit gallery", "Edit", "Galleries", new { Id = Model.Gallery.GalleryId }, null)
+}
+else
+{
+    @Html.ActionLink("Create New gallery", "Create", "Galleries", new { AuctionId = Model.AuctionId }, null)
+}
 
 <div>
     @Html.ActionLink("Back to List", "Index")

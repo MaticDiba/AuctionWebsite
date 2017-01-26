@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using AuctionWeb.DAL;
 using AuctionWeb.Models;
 using AuctionWeb.Helpers;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace AuctionWeb.Controllers
 {
@@ -84,11 +86,16 @@ namespace AuctionWeb.Controllers
                 }
                 if (ModelState.IsValid && addr.Address == auctionOffer.Email)
                 {
+                    if (db.AuctionOffera.Count(au => au.Email == auctionOffer.Email && au.Amount == auctionOffer.Amount && au.ImageId == auctionOffer.ImageId) > 0)
+                    {
+                        return Json(new { message = "Ponudba s tem email naslovom in to vrednostjo že obstaja" , value = maxValueForImage + 1, close = false }, JsonRequestBehavior.AllowGet);
+                    }
                     auctionOffer.AuctionOfferId = db.AuctionOffera.Count() > 0 ? db.AuctionOffera.Max(au => au.AuctionOfferId) : 1;
                     auctionOffer.DateTime = DateTime.Now;
                     auctionOffer.Guid = Guid.NewGuid().ToString().Replace("-", "_");
                     db.AuctionOffera.Add(auctionOffer);
                     db.SaveChanges();
+                    CheckIfUserExistThenCreate(auctionOffer);
                     try
                     {
                         SendMail(auctionOffer);
@@ -109,6 +116,17 @@ namespace AuctionWeb.Controllers
             }
             //return View(auctionOffer);
         }
+
+        private void CheckIfUserExistThenCreate(AuctionOffer auctionOffer)
+        {
+            var userManager = HttpContext.GetOwinContext().GetUserManager<App_Start.ApplicationUserManager>();
+            var user = userManager.FindByEmail(auctionOffer.Email);
+            if (user == null)
+            {
+                var newUser = new ApplicationUser { UserName = auctionOffer.Email, Email = auctionOffer.Email };
+                var result = userManager.CreateAsync(newUser);
+            }
+       }
 
         private void SendMail(AuctionOffer auctionOffer)
         {
@@ -148,6 +166,11 @@ namespace AuctionWeb.Controllers
                 Session["message"] = "Vaša ponudba ni bila zabeležena.";
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        public void ClearMessage()
+        {
+            Session["message"] = null;
         }
         // GET: AuctionOffers/Edit/5
         [Authorize]

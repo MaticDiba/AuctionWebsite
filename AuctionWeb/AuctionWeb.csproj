@@ -182,6 +182,7 @@
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\ImageHandler.cs" />
+    <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Migrations\201701171805373_InitialCreate.cs" />
     <Compile Include="Migrations\201701171805373_InitialCreate.Designer.cs">
       <DependentUpon>201701171805373_InitialCreate.cs</DependentUpon>

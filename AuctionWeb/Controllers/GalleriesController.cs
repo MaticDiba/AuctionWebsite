@@ -62,10 +62,25 @@ namespace AuctionWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                int maxGalleryId = db.Galleries.Count() > 0 ? db.Galleries.Max(gal => gal.GalleryId) : 0;
+                /*int maxGalleryId = db.Galleries.Count() > 0 ? db.Galleries.Max(gal => gal.GalleryId) : 0;
                 gallery.GalleryId = maxGalleryId + 1;
-                db.Galleries.Add(gallery);
-                db.SaveChanges();
+                */
+                if ((User.Identity != null) && (User.Identity.Name != null)) gallery.CreatedBy = User.Identity.Name;
+                gallery.CreatedDateTime = DateTime.Now;
+                bool done = false;
+                while (!done)
+                {
+                    try
+                    {
+                        db.Galleries.Add(gallery);
+                        db.SaveChanges();
+                        done = true;
+                    }
+                    catch
+                    {
+                        gallery.GalleryId += 1;
+                    }
+                }
                 return RedirectToAction("Index");
             }
 
