@@ -131,8 +131,10 @@ namespace AuctionWeb.Controllers
             {
                 return Json("Failed", JsonRequestBehavior.AllowGet);
             }
+
             db.Images.Remove(image);
             db.SaveChanges();
+
             return Json("OK", JsonRequestBehavior.AllowGet);
         }
 
