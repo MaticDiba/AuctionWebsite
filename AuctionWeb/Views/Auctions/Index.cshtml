@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<AuctionWeb.Models.Auction>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Seznam";
 }
 
 <h2>Seznam avkcij</h2>
@@ -9,7 +9,7 @@
 {
 
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Ustvari novo", "Create")
     </p>
 }
 
@@ -37,14 +37,14 @@
         <td>
             @if (Context.User.Identity.IsAuthenticated && true) { 
 
-                @Html.ActionLink("Delete", "Delete", new { id = item.AuctionId }) 
+                @Html.ActionLink("Izbriši", "Delete", new { id = item.AuctionId }) 
                 @Html.Raw(" | ")
             }
             @Html.ActionLink("Odpri avkcijo", "Details", new { id=item.AuctionId }) 
             @if (Context.User.Identity.IsAuthenticated)
             {
                 @Html.Raw(" | ")
-                @Html.ActionLink("Edit", "Edit", new { id = item.AuctionId })
+                @Html.ActionLink("Uredi", "Edit", new { id = item.AuctionId })
 
             }
         </td>

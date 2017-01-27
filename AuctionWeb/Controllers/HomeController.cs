@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AuctionWeb.DAL;
+using AuctionWeb.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +10,11 @@ namespace AuctionWeb.Controllers
 {
     public class HomeController : Controller
     {
+        private AuctionContext db = new AuctionContext();
         public ActionResult Index()
         {
-            return View();
+            List<Auction> auctions = db.Auctions.OrderByDescending(x => x.CreatedDateTime).Take(5).ToList();
+            return View(auctions);
         }
 
         public ActionResult About()

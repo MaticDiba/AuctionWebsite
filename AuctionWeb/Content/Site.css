@@ -27,3 +27,6 @@ textarea {
 .no-titlebar .ui-dialog-titlebar {
     display: none;
 }
+.gap-right {
+  margin-right: 10px; 
+}
