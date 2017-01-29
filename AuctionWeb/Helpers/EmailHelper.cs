@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web;
+using System.Xml.Linq;
 
 namespace AuctionWeb.Helpers
 {
     public static class EmailHelper
     {
-        static MailAddress fromAddress = new MailAddress("dzrjljubljana@gmail.com", "From Name");
+        static MailAddress fromAddress = new MailAddress(ConfigurationManager.AppSettings["fromAddress"], "Auction website");
         static MailAddress toAddress = new MailAddress("to@example.com", "To Name");
-        const string fromPassword = "sovicaoka";
+        static string fromPassword = ConfigurationManager.AppSettings["fromPassword"].ToString();
         const string subject = "Subject";
         const string body = "Body";
 
@@ -29,5 +31,6 @@ namespace AuctionWeb.Helpers
 
             return smtp;
         }
+        
     }
 }

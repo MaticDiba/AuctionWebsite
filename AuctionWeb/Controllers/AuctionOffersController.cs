@@ -130,10 +130,11 @@ namespace AuctionWeb.Controllers
 
         private void SendMail(AuctionOffer auctionOffer)
         {
+            
             System.Net.Mail.MailMessage msg = new System.Net.Mail.MailMessage();
             msg.To.Add(auctionOffer.Email);
             msg.IsBodyHtml = true;
-            msg.From = new System.Net.Mail.MailAddress("matic.batista@Ius-software.si");
+            msg.From = new System.Net.Mail.MailAddress(ConfigurationManager.AppSettings["fromAddress"]);
             msg.Subject = "Confirm your offer";
             System.Text.StringBuilder bodi = new System.Text.StringBuilder();
             bodi.Append("<html><body>");

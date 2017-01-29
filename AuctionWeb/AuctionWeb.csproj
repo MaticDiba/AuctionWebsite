@@ -586,6 +586,9 @@
     <Content Include="sass\screen.sass" />
     <Content Include="sass\lightbox.sass" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Content Include="Email.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\dzrjlauction - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\dzrjlauction - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
